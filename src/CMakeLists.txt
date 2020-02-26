@@ -53,7 +53,7 @@ add_library(parthenon
   driver/multistage.cpp
 
   interface/Container.cpp
-  interface/PropertiesInterface.cpp
+  interface/FieldPropertiesInterface.cpp
   interface/MaterialVariable.cpp
   interface/Stage.cpp
   interface/Update.cpp
