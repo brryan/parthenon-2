@@ -18,7 +18,7 @@
 #include "globals.hpp" // my_rank
 #include "mesh/mesh.hpp"
 #include "Container.hpp"
-#include "MaterialVariable.hpp"
+#include "SparseVariable.hpp"
 
 namespace parthenon {
 ///
@@ -171,14 +171,14 @@ void Container<T>::StageSet(std::string name) {
   for (auto &myMap : s->_matVars.getAllCellVars()) {
     // for every variable Map in the material variables array
     for (auto &v : myMap.second) {
-      if ( (v.second->metadata()).fillsGhost()) {  
+      if ( (v.second->metadata()).fillsGhost()) {
         v.second->resetBoundary();
 	      //v.second->vbvar->var_cc = v.second.get();
 	//v.second->mpiStatus=true;
       }
     }
   }
-  
+
 }
 
 // provides a container that has a single material slice
@@ -546,7 +546,7 @@ int Container<T>::GetVariables(const std::vector<std::string>& names,
     catch (const std::invalid_argument& x) {
       // Not a regular variable, so try a material variable
       try { // material variable
-        MaterialMap<T>& M = GetMaterial(label);
+        SparseMap<T>& M = GetMaterial(label);
         if ( M.size() > 0) {
           if ( matID.size() > 0) {
             for (auto& theMat : matID) {
