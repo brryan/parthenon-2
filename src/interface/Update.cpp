@@ -43,7 +43,6 @@ void FluxDivergence(Container<Real> &in, Container<Real> &dudt_cont) {
     Variable<Real>& dudt = *cout_iter.vars[n];
     dudt.ZeroClear();
   }*/
-  int ndim = pmb->pmy_mesh->ndim;
   AthenaArray<Real> du(pmb->ncells1);
   for (int k = ks; k <= ke; k++) {
     for (int j = js; j <= je; j++) {

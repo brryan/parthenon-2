@@ -263,26 +263,6 @@ void BoundaryValues::ProlongateGhostCells(const NeighborBlock& nb,
     pmr->ProlongateInternalField((*var_fc), si, ei, sj, ej, sk, ek);
   }
 
-  // now that the ghost-ghost zones are filled and prolongated,
-  // calculate the loop limits for the finer grid
-  int fsi, fei, fsj, fej, fsk, fek;
-  fsi = (si - pmb->cis)*2 + pmb->is;
-  fei = (ei - pmb->cis)*2 + pmb->is + 1;
-  if (pmb->block_size.nx2 > 1) {
-    fsj = (sj - pmb->cjs)*2 + pmb->js;
-    fej = (ej - pmb->cjs)*2 + pmb->js + 1;
-  } else {
-    fsj = pmb->js;
-    fej = pmb->je;
-  }
-  if (pmb->block_size.nx3 > 1) {
-    fsk = (sk - pmb->cks)*2 + pmb->ks;
-    fek = (ek - pmb->cks)*2 + pmb->ks + 1;
-  } else {
-    fsk = pmb->ks;
-    fek = pmb->ke;
-  }
-
   // KGF: COUPLING OF QUANTITIES (must be manually specified)
   // Field prolongation completed, calculate cell centered fields
   // TODO(KGF): passing nullptrs (pf) if no MHD (coarse_* no longer in MeshRefinement)

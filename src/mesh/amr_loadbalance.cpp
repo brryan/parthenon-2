@@ -231,12 +231,13 @@ void Mesh::UpdateMeshBlockTree(int &nnew, int &ndel) {
   }
 
   // allocate memory for the location arrays
-  LogicalLocation *lref{}, *lderef{}, *clderef{};
+  // LogicalLocation *lref{}, *lderef{}, *clderef{};
+  std::vector<LogicalLocation> lref, lderef, clderef;
   if (tnref > 0)
-    lref = new LogicalLocation[tnref];
+    lref.resize(tnref);
   if (tnderef >= nleaf) {
-    lderef = new LogicalLocation[tnderef];
-    clderef = new LogicalLocation[tnderef/nleaf];
+    lderef.resize(tnderef);
+    clderef.resize(tnderef/nleaf);
   }
 
   // collect the locations and costs
@@ -244,19 +245,19 @@ void Mesh::UpdateMeshBlockTree(int &nnew, int &ndel) {
   pmb = pblock;
   while (pmb != nullptr) {
     if (pmb->pmr->refine_flag_ ==  1)
-      lref[iref++] = pmb->loc;
+      lref.at(iref++) = pmb->loc;
     if (pmb->pmr->refine_flag_ == -1 && tnderef >= nleaf)
-      lderef[ideref++] = pmb->loc;
+      lderef.at(ideref++) = pmb->loc;
     pmb = pmb->next;
   }
 #ifdef MPI_PARALLEL
   if (tnref > 0) {
     MPI_Allgatherv(MPI_IN_PLACE, bnref[Globals::my_rank],   MPI_BYTE,
-                   lref,   bnref,   brdisp, MPI_BYTE, MPI_COMM_WORLD);
+                   lref.data(),   bnref,   brdisp, MPI_BYTE, MPI_COMM_WORLD);
   }
   if (tnderef >= nleaf) {
     MPI_Allgatherv(MPI_IN_PLACE, bnderef[Globals::my_rank], MPI_BYTE,
-                   lderef, bnderef, bddisp, MPI_BYTE, MPI_COMM_WORLD);
+                   lderef.data(), bnderef, bddisp, MPI_BYTE, MPI_COMM_WORLD);
   }
 #endif
 
@@ -297,10 +298,7 @@ void Mesh::UpdateMeshBlockTree(int &nnew, int &ndel) {
   }
   // sort the lists by level
   if (ctnd > 1)
-    std::sort(clderef, &(clderef[ctnd-1]), LogicalLocation::Greater);
-
-  if (tnderef >= nleaf)
-    delete [] lderef;
+    std::sort(clderef.begin(), clderef.begin() + ctnd - 1, LogicalLocation::Greater);
 
   // Now the lists of the blocks to be refined and derefined are completed
   // Start tree manipulation
@@ -309,16 +307,12 @@ void Mesh::UpdateMeshBlockTree(int &nnew, int &ndel) {
     MeshBlockTree *bt=tree.FindMeshBlock(lref[n]);
     bt->Refine(nnew);
   }
-  if (tnref != 0)
-    delete [] lref;
 
   // Step 2. perform derefinement
   for (int n=0; n<ctnd; n++) {
     MeshBlockTree *bt = tree.FindMeshBlock(clderef[n]);
     bt->Derefine(ndel);
   }
-  if (tnderef >= nleaf)
-    delete [] clderef;
 
   return;
 }
