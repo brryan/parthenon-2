@@ -97,7 +97,7 @@ add_library(parthenon
   parameter_input.cpp
 )
 target_compile_features(parthenon PUBLIC cxx_std_14)
-target_link_libraries(parthenon PUBLIC MPI::MPI_CXX OpenMP::OpenMP_CXX HDF5_C)
+target_link_libraries(parthenon PUBLIC MPI::MPI_CXX OpenMP::OpenMP_CXX HDF5_C kokkos)
 target_include_directories(parthenon PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}/generated

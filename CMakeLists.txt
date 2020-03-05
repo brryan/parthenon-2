@@ -44,6 +44,11 @@ endif()
 find_package(MPI REQUIRED)
 find_package(OpenMP REQUIRED)
 
+# Kokkos recommendatation resulting in not using default GNU extensions
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/kokkos kokkos)
+
 set(HDF5_PREFER_PARALLEL True)
 find_package(HDF5 REQUIRED)
 
