@@ -84,11 +84,11 @@ class MeshBlock {
 public:
   MeshBlock(int igid, int ilid, LogicalLocation iloc, RegionSize input_size,
             BoundaryFlag *input_bcs, Mesh *pm, ParameterInput *pin,
-            std::vector<std::shared_ptr<FieldPropertiesInterface>>& mats,
+            std::vector<std::shared_ptr<FieldPropertiesInterface>>& properties,
             int igflag,
             bool ref_flag = false);
   MeshBlock(int igid, int ilid, Mesh *pm, ParameterInput *pin,
-            std::vector<std::shared_ptr<FieldPropertiesInterface>> & mats,
+            std::vector<std::shared_ptr<FieldPropertiesInterface>> & properties,
             std::map<std::string, std::shared_ptr<StateDescriptor>>& phys,
             LogicalLocation iloc,
             RegionSize input_block, BoundaryFlag *input_bcs, double icost,
@@ -98,7 +98,7 @@ public:
 	    LogicalLocation iloc,
 	    RegionSize input_block,
 	    BoundaryFlag *input_bcs, Mesh *pm, ParameterInput *pin,
-	    std::vector<std::shared_ptr<FieldPropertiesInterface>>& mats,
+	    std::vector<std::shared_ptr<FieldPropertiesInterface>>& properties,
 	    std::map<std::string, std::shared_ptr<StateDescriptor>>& phys,
 	    int igflag, bool ref_flag=false);
   ~MeshBlock();
@@ -135,7 +135,7 @@ public:
   // The User defined containers
   Container<Real> real_container;
 
-  std::vector<std::shared_ptr<FieldPropertiesInterface>> materials;
+  std::vector<std::shared_ptr<FieldPropertiesInterface>> properties;
   std::map<std::string, std::shared_ptr<StateDescriptor>> physics;
   std::unique_ptr<MeshBlockApplicationData> app;
 
@@ -220,10 +220,10 @@ class Mesh {
 public:
   // 2x function overloads of ctor: normal and restarted simulation
   Mesh(ParameterInput *pin,
-      std::vector<std::shared_ptr<FieldPropertiesInterface>> &materials,
+      std::vector<std::shared_ptr<FieldPropertiesInterface>> &properties,
       std::map<std::string, std::shared_ptr<StateDescriptor>>& physics, int test_flag=0);
   Mesh(ParameterInput *pin, IOWrapper &resfile,
-      std::vector<std::shared_ptr<FieldPropertiesInterface>> &materials,
+      std::vector<std::shared_ptr<FieldPropertiesInterface>> &properties,
       std::map<std::string, std::shared_ptr<StateDescriptor>>& physics, int test_flag=0);
   ~Mesh();
 
@@ -249,7 +249,7 @@ public:
 
   // ptr to first MeshBlock (node) in linked list of blocks belonging to this MPI rank:
   MeshBlock *pblock;
-  std::vector<std::shared_ptr<FieldPropertiesInterface>> materials;
+  std::vector<std::shared_ptr<FieldPropertiesInterface>> properties;
   std::map<std::string, std::shared_ptr<StateDescriptor>> physics;
 
   AthenaArray<Real> *ruser_mesh_data;

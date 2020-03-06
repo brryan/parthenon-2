@@ -33,7 +33,7 @@ class CalculatePi : public Driver {
 };
 
 void ProcessProperties(std::vector<std::shared_ptr<PropertiesInterface>>& properties, ParameterInput *pin);
-void InitializePhysics(std::map<std::string, std::shared_ptr<StateDescriptor>>& physics, ParameterInput *pin); 
+void InitializePhysics(std::map<std::string, std::shared_ptr<StateDescriptor>>& physics, ParameterInput *pin);
 
 // putting a "physics" package in a namespace
 namespace PiCalculator {

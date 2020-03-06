@@ -24,7 +24,7 @@ namespace parthenon {
 void ProcessProperties(std::vector<std::shared_ptr<PropertiesInterface>>& properties, ParameterInput *pin) {}
 
 void InitializePhysics(std::map<std::string, std::shared_ptr<StateDescriptor>>& physics, ParameterInput *pin) {
-  // only have one package for this app, but will typically have more things added to 
+  // only have one package for this app, but will typically have more things added to
   physics["PiCalculator"] = PiCalculator::Initialize(pin);
 }
 

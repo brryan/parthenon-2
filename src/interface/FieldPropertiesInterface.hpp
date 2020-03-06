@@ -51,13 +51,13 @@ private:
 /*
 template <typename T>
 auto ConvertFieldPropertiesToInterface(
-    const std::vector<std::shared_ptr<T>> &materials) {
+    const std::vector<std::shared_ptr<T>> &properties) {
   static_assert(std::is_base_of<FieldPropertiesInterface, T>::value,
                 "Type given to ConvertFieldPropertiesToInterface is not "
                 "derived from FieldPropertiesInterface");
   std::vector<std::shared_ptr<FieldPropertiesInterface>> res;
-  for (auto mat : materials)
-    res.push_back(mat);
+  for (auto p : properties)
+    res.push_back(p);
 
   return res;
 }
