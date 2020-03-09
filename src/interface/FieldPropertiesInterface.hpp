@@ -48,21 +48,6 @@ private:
   static std::map<std::string, int> _label_to_id;
 };
 
-/*
-template <typename T>
-auto ConvertFieldPropertiesToInterface(
-    const std::vector<std::shared_ptr<T>> &properties) {
-  static_assert(std::is_base_of<FieldPropertiesInterface, T>::value,
-                "Type given to ConvertFieldPropertiesToInterface is not "
-                "derived from FieldPropertiesInterface");
-  std::vector<std::shared_ptr<FieldPropertiesInterface>> res;
-  for (auto p : properties)
-    res.push_back(p);
-
-  return res;
-}
-*/
-
 } // namespace parthenon
 
 #endif // PARTHENON_INTERFACE_FIELDPROPERTIESINTERFACE_HPP_
