@@ -4,7 +4,7 @@ Parthenon AMR infrastructure
 
 # Required Dependencies
 
-* CMake 3.13 or greater
+* CMake 3.10 or greater
 * gcc or intel compiler
 * mpi 
 * openMP
@@ -50,3 +50,14 @@ or to build for NVIDIA V100 GPUs (using `nvcc` compiler for GPU code)
 
     mkdir build-cuda-v100 && cd build-cuda-v100
     cmake -DKokkos_ENABLE_CUDA=On -DCMAKE_CXX_COMPILER=$(pwd)/../external/kokkos/bin/nvcc_wrapper -DKokkos_ARCH_VOLTA70=On ../
+
+# Development FAQ
+
+## Kokkos/Wrapper related
+
+- `par_for` wrappers use inclusive bounds, i.e., the loop will include the last index given
+- `AthenaArrayND` arrays by default allocate on the *device* using default precision configured
+- To create an array on the hosti with identical layout to the device array either use
+  - `auto arr_host = Kokkos::create_mirror(arr_dev);` to always create a new array even if the device is associated with the host (e.g., OpenMP) or
+  - `auto arr_host = Kokkos::create_mirror_view(arr_dev);` to create an array on the host if the HostSpace != DeviceSpace or get another reference to arr_dev through arr_host if HostSpace == DeviceSpace
+- `par_for` and `Kokkos::deep_copy` by default use the standard stream (on Cuda devices) and are discouraged from use. Use `mb->par_for` and `mb->deep_copy` instead.
